@@ -5,12 +5,7 @@ const fs = require('fs');
 const parse = require('csv-parse');
 const hbs = require('handlebars');
 
-//File Reads
-var helloTemplate;
-fs.readFile('helloTemplate.hbs', 'utf-8', (err, data) => {
-    helloTemplate = hbs.compile(data);
-});
-
+// File Reads
 var fixtures;
 fs.readFile('deutsche-bundesliga-2016-2017-fixtures.csv', 'utf-8', function(err, data) {
     if(err) throw err;
@@ -49,80 +44,142 @@ hbs.registerPartial("nav", `
         <a href="/matchday">Matchdays</a>
     </nav>`);
 
+
 var server = http.createServer(function(request, response) {
+    if(request.method != "GET") {
+        response.error = 405;
+        response.write("Not supported request method!");
+        return;
+    }
     const parsedUrl = url.parse(request.url);
 
     var data;
-    var body;
+    var title = "";
+    var body = "";
     var error = 0;
-    var  pathname = parsedUrl.pathname.split("/");
+    var pathname = parsedUrl.pathname.split("/");
+    var query = querystring.parse(parsedUrl.query);
 
-    switch(pathname[1]) {
+    try {
+        switch (pathname[1]) {
+            case "":
+                title = "<h1>Startseite</h1>";
+                body = `<body><p>It's against my programming to impersonate a deity.</p>
+                        <p>- C-3PO, Star Wars Episode VI: Return of the Jedi</p></body>`;
+                break;
 
-        case "matchday":
-            data = [];
-            var idx = 0;
-            if((pathname.length > 2) && (pathname[2] > 0)) {
-                //Extract all matches for the given 'pathname[2]' matchday
-                for(var i = 0; i < fixtures.length; i++) {
-                    if(fixtures[i].matchDay == pathname[2]) {
+            case "matchday":
+                data = [];
+                var mDay;
+                var idx = 0;
+
+                if (query.matchDay != null) {
+                    mDay = query.matchDay;
+                }
+                else if ((pathname.length > 2) && (pathname[2] > 0)) {
+                    mDay = pathname[2];
+                }
+                else {
+                    data[idx++] = fixtures[0];
+                    for (var i = 1; i < fixtures.length; i++) {
+                        if (fixtures[i].matchDay == data[idx - 1].matchDay) {
+                            continue;
+                        }
+                        else {
+                            data[idx++] = fixtures[i];
+                        }
+                    }
+                    body = `<form action="/matchday" method="get">
+                            <input type="text" name="matchDay">
+                            <button type="submit">Filter</button>
+                        </form>`;
+                    body += listMatchdays(data);
+                    break;
+                }
+
+                //Extract all matches for the given  matchday ('pathname[2]')
+                for (var i = 0; i < fixtures.length; i++) {
+                    if (fixtures[i].matchDay == mDay) {
                         data[idx++] = fixtures[i];
                     }
                 }
 
                 //if no match on the given day has been found
-                if(data.length == 0) {
-                    error = 500;
+                if (data.length == 0) {
+                    error = 404;
                     break;
                 }
                 body = tableMatchDay(data);
-            }
-            else {
-                data[idx++] = fixtures[0];
-                for(var i = 1; i < fixtures.length; i++) {
-                    if(fixtures[i].matchDay == data[idx - 1].matchDay) {
-                        continue;
-                    }
-                    else {
-                        data[idx++] = fixtures[i];
-                    }
-                }
-                body = listMatchdays(data);
-            }
-            break;
+                break;
 
-        default:
-            status = 404;
-            break;
+            default:
+                status = 404;
+                break;
+        }
+    } catch (e) {
+        response.status = 500;
+        response.write( "Lost a planet, Master Obi-Wan has. How embarrassing. How embarrassing." +
+                        "\n- YODA, Star Wars Episode II: Attack of the Clones");
+        response.end();
+        return;
     }
 
-
     if(error == 0) {
-        response.write(createHtml("Test", body, data));
+        response.write(createHtml(title, body, data));
     }
     else {
         response.status = error;
-        response.write("Error");
+        response.write("Error 404. Page not found!" +
+                       "\n\nWould it help if I got out and pushed?" +
+                       "\n- PRINCESS LEIA, Star Wars Episode V: The Empire Strikes Back");
     }
 
     response.end();
 });
 
+/**
+ * Create and compile (handlebars) the given data to an finalized HTML document.
+ * @param title string object which will be placed above body.
+ * @param body html body as string.
+ * @param data object for handlebars compiler.
+ * @returns {*}
+ */
 function createHtml(title, body, data) {
     return hbs.compile(`<!DOCTYPE html>
         <html>
             <head>
                 <meta charset="utf-8">
-                <title>HTML Seite mit Handlebars</title>            
+                <title>HTML Seite mit Handlebars</title>   
+                <style>
+                    body {      background-color: #EAEAEA;
+                                font-family: Arial, Helvetica, sans-serif; }
+                    footer {    background-color: #FFA42D;
+                                padding: 10px;
+                                margin: 15px 0px 15px 0px;
+                                text-align: center; }
+                    nav {       background-color: #FFA42D;
+                                padding: 10px;
+                                margin: 15px 0px 15px 0px; }
+                    #main {     padding: 15px 0px 15px 20px;                                
+                                background-color: #C0C3CD; }
+                </style>
             </head>
-            <body>
+            <body>            
                 {{> nav}}
-                ${body}    
+                ${title}
+                <div id="main">
+                    ${body}    
+                </div>
                 {{> footer}}
             </body>            
         </html>`)(data);
 }
 
+/**
+ * Create a list of matchDays.
+ * @param data
+ * @returns {*}
+ */
 function listMatchdays(data) {
     return hbs.compile(`<p>Matchdays:</p>
                         {{#list this}} 
@@ -131,7 +188,11 @@ function listMatchdays(data) {
                         (data);
 }
 
-//Create Table for every match on this Matchday
+/**
+ * Create Table for every match on this Matchday.
+ * @param data
+ * @returns {*}
+ */
 function tableMatchDay(data) {
     return hbs.compile(`<table>
                             <tr>
