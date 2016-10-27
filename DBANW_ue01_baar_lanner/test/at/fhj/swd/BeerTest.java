@@ -40,6 +40,7 @@ public class BeerTest extends Assert {
 	@Test
 	public void addPerson() {
 		transaction.begin();
+		manager.createNativeQuery("TRUNCATE TABLE Person").executeUpdate();
 		Person per = new Person("Alex", "m", "AUT", "028");
 		assertNotNull(per);
 		manager.persist(per);
