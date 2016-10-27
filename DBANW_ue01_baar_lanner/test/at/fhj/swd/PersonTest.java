@@ -1,5 +1,6 @@
 package at.fhj.swd;
 
+import javax.management.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -12,7 +13,7 @@ import org.junit.Assert;
 
 
 @org.junit.FixMethodOrder(org.junit.runners.MethodSorters.NAME_ASCENDING)
-public class BeerTest extends Assert {
+public class PersonTest extends Assert {
 	static EntityManagerFactory factory;
 	static EntityManager manager;
 	static EntityTransaction transaction;
@@ -40,8 +41,9 @@ public class BeerTest extends Assert {
 	@Test
 	public void addPerson() {
 		transaction.begin();
-		manager.createNativeQuery("TRUNCATE TABLE Person").executeUpdate();
-		Person per = new Person("Alex", "m", "AUT", "028");
+		clean();
+		
+		Person per = new Person("Alex", "m", "AUT", 28);
 		assertNotNull(per);
 		manager.persist(per);
 		transaction.commit();
@@ -54,6 +56,10 @@ public class BeerTest extends Assert {
 		}
 		manager.close();
 		factory.close();
+	}
+	
+	public static void clean() {
+		manager.createNativeQuery("DELETE FROM person").executeUpdate();
 	}
 	
 }

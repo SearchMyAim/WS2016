@@ -18,7 +18,7 @@ CREATE TABLE Person (
 	Name varchar(255) NOT NULL, 
 	Geschlecht varchar(1), 
 	Nationalitaet varchar(3), 
-	"Alter" varchar(3), 
+	Alter int4, 
 	PRIMARY KEY (Name)
 );
 
