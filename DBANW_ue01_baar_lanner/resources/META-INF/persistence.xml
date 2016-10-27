@@ -5,6 +5,7 @@
 			 xmlns="http://java.sun.com/xml/ns/persistence">
 	<persistence-unit name="Beer">
 		<class>at.fhj.swd.Beer</class>
+		<class>at.fhj.swd.Person</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />

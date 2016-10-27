@@ -35,8 +35,15 @@ public class BeerTest extends Assert {
 	@Test
 	public void connectionTest() {
 		transaction.begin();
-		
-		
+	}
+	
+	@Test
+	public void addPerson() {
+		transaction.begin();
+		Person per = new Person("Alex", "m", "AUT", "028");
+		assertNotNull(per);
+		manager.persist(per);
+		transaction.commit();
 	}
 	
 	@AfterClass
