@@ -1,5 +1,6 @@
 CREATE TABLE Art (
 	Brauart varchar(255) NOT NULL, 
+	
 	PRIMARY KEY (Brauart)
 );
 
@@ -7,10 +8,11 @@ CREATE TABLE Bier (
 	Name varchar(255) NOT NULL, 
 	ArtBrauart varchar(255) NOT NULL, 
 	PersonName varchar(255) NOT NULL, 
-	Kaufdatum int4, 
-	Ablaufdatum int4, 
-	"Column" int4, 
+	Kaufdatum date, 
+	Ablaufdatum date, 
+	Produktionsdatum date, 
 	"Lager OrtId" int4 NOT NULL, 
+	
 	PRIMARY KEY (Name)
 );
 
@@ -19,6 +21,7 @@ CREATE TABLE Person (
 	Geschlecht varchar(1), 
 	Nationalitaet varchar(3), 
 	Alter int4, 
+	
 	PRIMARY KEY (Name)
 );
 
@@ -26,33 +29,39 @@ CREATE TABLE Ort (
 	PK_Id SERIAL NOT NULL, 
 	LandName varchar(255) NOT NULL, 
 	HerstellerName int4 NOT NULL, 
+	
 	PRIMARY KEY (PK_Id)
 );
 
 CREATE TABLE Land (
 	Name varchar(255) NOT NULL, 
+	
 	PRIMARY KEY (Name)
 );
 
 CREATE TABLE Hersteller (
 	Name SERIAL NOT NULL, 
+	
 	PRIMARY KEY (Name)
 );
 
 CREATE TABLE "Lager Ort" (
 	Id SERIAL NOT NULL, 
+	
 	PRIMARY KEY (Id)
 );
 
 CREATE TABLE "Lager Ort_Ort" (
 	"Lager OrtId" int4 NOT NULL, 
 	OrtPK_Id int4 NOT NULL, 
+	
 	PRIMARY KEY ("Lager OrtId", OrtPK_Id)
 );
 
 CREATE TABLE Art_Hersteller (
 	ArtBrauart varchar(255) NOT NULL, 
 	HerstellerName int4 NOT NULL, 
+	
 	PRIMARY KEY (ArtBrauart, HerstellerName)
 );
 
