@@ -35,11 +35,11 @@ int main(int argc, char *argv[]) {
         return SIEVE_INVALID_ARGUMENT;
     }
 
-    if(limit >= MEMORY_4GB_LIMIT) {
-        uint64_t max = limit * 8;
+    if(limit >= UINT32_MAX) {
+        uint64_t max = (limit * ((limit == UINT32_MAX) ? 1 : 2)) / 1000000;
         printf(        "\n!!------------ Exceeding 4GB Memory ------------!!"
                        "\n!! If you go on more then 4GB RAM are necessary !!"
-                       "\n!! Memory usage: %" PRIu64 " "
+                       "\n!! Memory usage: %" PRIu64 " Megabyte"
                        "\n!! Do you want to go on? [Y/N]:", max);
         char go = 'n';
         scanf("%c", &go);
@@ -65,5 +65,6 @@ int main(int argc, char *argv[]) {
     if(primeArray != NULL) {
         free(primeArray);
     }
+
     return status;
 }
