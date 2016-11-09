@@ -35,36 +35,26 @@ int main(int argc, char *argv[]) {
         return SIEVE_INVALID_ARGUMENT;
     }
 
-    if(limit >= UINT32_MAX) {
-        uint64_t max = (limit * ((limit == UINT32_MAX) ? 1 : 2)) / 1000000;
-        printf(        "\n!!------------ Exceeding 4GB Memory ------------!!"
-                       "\n!! If you go on more then 4GB RAM are necessary !!"
-                       "\n!! Memory usage: %" PRIu64 " Megabyte"
-                       "\n!! Do you want to go on? [Y/N]:", max);
-        char go = 'n';
-        scanf("%c", &go);
-        if((go != 'Y') && (go != 'y')) {
-            return SIEVE_OUT_OF_MEMORY;
-        }
-    }
-
-    int status = print;
+    int status = SIEVE_OK;
     size_t primeCount = 0;
-    size_t *primeArray = sieve(limit, &status, &primeCount);
+    uint8_t *primeArray = sieve(limit, &status, &primeCount);
 
     if(status == SIEVE_OK) {
         printf("\nPrime count: %" PRIu64 "\n", primeCount);
 
         if((primeArray != NULL) && (print == PRIME_PRINT_ARRAY)) {
-            for(uint64_t i = 0; i < primeCount; i++) {
-                printf("%" PRIu64 " - ", primeArray[i]);
+            uint64_t fact = 8 * sizeof(uint8_t);
+            for (uint64_t i = 2; i < limit; i++) {
+                if((primeArray[i / fact] & (1 << (i % fact))) == PRIME_NUMBER) {
+                    printf("%" PRIu64 " - ", i);
+                }
             }
         }
     }
 
     if(primeArray != NULL) {
+        /* If memory has been allocated free it at this point. */
         free(primeArray);
     }
-
     return status;
 }
