@@ -19,6 +19,6 @@
  *         [0] = 0x51 (0101 0001) = Bits at position 1, 5 and 7 are set. Representing the numeric values 1, 5 and 7.
  *         [1] = 0x03 (0000 0110) = Bits at position 2 and 3 are set at index => (8*1) + 2 = '10' and (8*1)+3 = '11'
  */
-uint64_t *sieve(uint64_t limit, int *status, size_t *primeCount);
+uint8_t *sieve(uint64_t limit, int *status, size_t *primeCount);
 
 #endif //PROGK_UE03_BAAR_SIEVE_H

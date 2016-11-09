@@ -4,7 +4,7 @@
 #include <math.h>
 #include "sieve.h"
 
-uint64_t *sieve(uint64_t limit, int *status, size_t *primeCount) {
+uint8_t *sieve(uint64_t limit, int *status, size_t *primeCount) {
     const uint8_t sizeUint8 = sizeof(uint8_t);
 
     /* Allocate the needed memory '0' initialized. */

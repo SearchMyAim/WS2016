@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     uint8_t *primeArray = sieve(limit, &status, &primeCount);
 
     if(status == SIEVE_OK) {
-        printf("\nPrime count: %" PRIu64 "\n", primeCount);
+        printf("\nPrime count: %zu \n", primeCount);
 
         if((primeArray != NULL) && (print == PRIME_PRINT_ARRAY)) {
             uint64_t fact = 8 * sizeof(uint8_t);
