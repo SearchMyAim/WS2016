@@ -6,9 +6,10 @@
 
 uint8_t *sieve(uint64_t limit, int *status, size_t *primeCount) {
     const uint8_t sizeUint8 = sizeof(uint8_t);
+    const uint64_t fact = 8 * sizeUint8;
 
     /* Allocate the needed memory '0' initialized. */
-    uint8_t *pMem = calloc(((limit + 1) / sizeUint8), sizeUint8);
+    uint8_t *pMem = calloc(((limit + 1) / fact), sizeUint8);
     if(pMem == NULL) {
         /* Memory allocation failed. */
         *status = SIEVE_OUT_OF_MEMORY;
@@ -16,9 +17,6 @@ uint8_t *sieve(uint64_t limit, int *status, size_t *primeCount) {
     }
 
     /* Mark all none-primes with the Eratosthenes algorithm. */
-    uint64_t fact = 8 * sizeUint8;
-
-
     pMem[0] = 0x01; //1 doesn't count as prime.
     for(uint64_t i = 2; i <= sqrt(limit); i++) {
         if((pMem[i / fact] & (1 << (i % fact))) == PRIME_NUMBER) {
