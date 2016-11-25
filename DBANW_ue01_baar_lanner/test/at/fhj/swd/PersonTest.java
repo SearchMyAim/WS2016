@@ -17,9 +17,9 @@ public class PersonTest extends Assert {
 	static EntityManagerFactory factory;
 	static EntityManager manager;
 	static EntityTransaction transaction;
-	
 	static final String persistenceUnitName = "Beer";
 	
+	static Person person = null;
 	
 	@BeforeClass 
 	public static void setup() {
@@ -34,19 +34,65 @@ public class PersonTest extends Assert {
 	}
 	
 	@Test
-	public void connectionTest() {
+	public void A_connectionTest() {
 		transaction.begin();
 	}
 	
+	@Test (expected=IllegalArgumentException.class) 
+	public void B_personNameTooShort() {
+		person = new Person("Al", "m", "AUT", 28);
+	}
+	
+	@Test (expected=IllegalArgumentException.class) 
+	public void B_personGenderWrong() {
+		person = new Person("Alex", "a", "AUT", 28);
+	}
+	
+	@Test (expected=IllegalArgumentException.class) 
+	public void B_personGenderTooLong() {
+		person = new Person("Alex", "mm", "AUT", 28);
+	}
+	
+	@Test (expected=IllegalArgumentException.class) 
+	public void B_personNationalityTooShort() {
+		person = new Person("Alex", "m", "AU", 28);
+	}
+	
+	@Test (expected=IllegalArgumentException.class) 
+	public void B_personNationalityTooLong() {
+		person = new Person("Alex", "m", "AUTT", 28);
+	}
+	
+	@Test (expected=IllegalArgumentException.class) 
+	public void B_personAgeZero() {
+		person = new Person("Alex", "m", "AUTT", 0);
+	}
+	
+	@Test (expected=IllegalArgumentException.class) 
+	public void B_personAgeTooHigh() {
+		person = new Person("Alex", "m", "AUTT", 151);
+	}
+	
 	@Test
-	public void addPerson() {
-		transaction.begin();
+	public void C_addPerson() {
 		clean();
-		
-		Person per = new Person("Alex", "m", "AUT", 28);
-		assertNotNull(per);
-		manager.persist(per);
+		person = new Person("Alex", "m", "AUT", 28);
+		assertNotNull(person);
+		manager.persist(person);
 		transaction.commit();
+	}
+	
+	@Test
+	public void C_removePerson() {
+		person = manager.find(Person.class, "Alex");
+		assertNotNull(person);
+		
+		transaction.begin();
+		manager.remove(person);
+		transaction.commit();		
+		
+		person = manager.find(Person.class, person.getName());
+		assertNull(person);
 	}
 	
 	@AfterClass

@@ -10,22 +10,20 @@ public class Person {
 	@Id @Column(name="name") 		private String name;
 	@Column(name="geschlecht")		private String geschlecht;
 	@Column(name="nationalitaet")	private String nationalitaet;
-	@Column(name="alter")			private String alter;
+	@Column(name="alter")			private int alter;
 	
-	public Person(String name, String geschlecht, String nationalitaet, String alter) {
+	public Person(String name, String geschlecht, String nationalitaet, int alter) {
 		setName(name);
 		setGeschlecht(geschlecht);
 		setNationalität(nationalitaet);
-		setAlter(alter);		
-		return;
+		setAlter(alter);	
 	}
 	
 	public Person() {
 		this.name = "Empty";
 		this.geschlecht = "n";
 		this.nationalitaet = "NON";
-		this.alter = "000";
-		return;
+		this.alter = 0;
 	}
 	
 	public String getName() {
@@ -33,6 +31,9 @@ public class Person {
 	}
 
 	public void setName(String name) {
+		if(name.length() < 3) {
+			throw new IllegalArgumentException("Name too short");
+		}
 		this.name = name;
 	}
 
@@ -41,6 +42,9 @@ public class Person {
 	}
 
 	public void setGeschlecht(String geschlecht) {
+		if((geschlecht.length() != 1) || (geschlecht.matches("[mMfF]") == false)) {
+			throw new IllegalArgumentException("Either m or f!");
+		}
 		this.geschlecht = geschlecht;
 	}
 
@@ -49,17 +53,20 @@ public class Person {
 	}
 
 	public void setNationalität(String nationalitaet) {
+		if(nationalitaet.length() != 3) {
+			throw new IllegalArgumentException("National Country Code MUST be 3 letters!");
+		}
 		this.nationalitaet = nationalitaet;
 	}
 
-	public String getAlter() {
+	public int getAlter() {
 		return alter;
 	}
 
-	public void setAlter(String alter) {
+	public void setAlter(int alter) {
+		if((alter == 0) || (alter > 150)) {
+			throw new IllegalArgumentException("Not born or for sure dead already!");
+		}
 		this.alter = alter;
 	}
-
-	
-
 }
