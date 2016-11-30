@@ -1,11 +1,15 @@
 <ul>
     <li><a href="/">Home</a></li>
 </ul>
-<form action="{{action}}" method="post">
+<form action="/{{action}}" method="post">
     <div class="divAlign">
         <div class="signup">
             <h4>User Information</h4>
-            <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="Username" placeholder="Username" required></p>
+            {{#if username}}
+                <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="Username" value="{{username}}" readonly="readonly"></p>
+            {{else}}
+                <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="Username" placeholder="Username" required></p>
+            {{/if}}
             <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="Forename" placeholder="Forename" required></p>
             <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="Surname" placeholder="Surname" required></p>
             <p><textarea name="Description" rows="4" cols="30" placeholder="Description"></textarea></p>

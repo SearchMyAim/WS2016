@@ -8,7 +8,8 @@ const   http        = require('http'),
         hbs         = require('handlebars'),
         fs          = require('fs'),
         htmlHandler = require("./htmlTemplates"),
-        formidable  = require('formidable');
+        formidable  = require('formidable'),
+        util        = require('util');
 
 /* Sub-Directories must exist. */
 const usrDir = "./usrDir/";
@@ -42,6 +43,13 @@ const routes = [
         methods: {
             'post': userProfil,
             'get': userProfil
+        }
+    },
+    {
+        rex: /^\/[a-zA-Z0-9_]{1,255}\/edit$/,
+        methods: {
+            'post': getSignUp,
+            'get': getSignUp
         }
     }
 
@@ -79,12 +87,19 @@ function getStartPage(req, res) {
 }
 
 function getSignUp(req, res) {
+    var name = url.parse(req.url).pathname.split("/")[1];
+    var username = null;
+    if(name != 'signup') {
+        username = name;
+    }
     res.setHeader('Content-Type', 'text/html');
     res.statusCode = 200;
     res.write(layout({
         title: "Sign-Up",
         bodyPartial: "signUp",
-        action: "newuser"}));
+        action: "newuser",
+        username: username
+    }));
     res.end();
 }
 
@@ -142,7 +157,7 @@ function userProfil(req, res) {
         res.write(layout({
             title: "User Profil",
             bodyPartial: 'userProfil',
-            action: "/signup",
+            action: name + "/edit",
             data: fields
         }));
         res.end();
