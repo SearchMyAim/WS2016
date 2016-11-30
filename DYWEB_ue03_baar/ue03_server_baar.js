@@ -96,7 +96,13 @@ function postNewUser(req, res) {
     form.parse(req, (err, fields, files) => {
         if(err) throw err;
         var name = fields.Username;
-        fs.writeFile(usrDir + name + '.json', JSON.stringify(fields), 'utf-8', (err) => {
+        var path = usrDir + 'data_' + name + "/";
+
+        if(!fs.existsSync(path)) {
+            fs.mkdirSync(path);
+        }
+
+        fs.writeFile(path + name + '.json', JSON.stringify(fields), 'utf-8', (err) => {
             if(err) throw err;
 
             res.setHeader('Content-Type', 'text/html');
@@ -119,11 +125,13 @@ function postNewUser(req, res) {
  * @returns {*}
  */
 function postUserProfil(req, res) {
-    const name = usrDir + url.parse(req.url).pathname.split("/")[1] + '.json';
-    if(!fs.existsSync(name)) {
+    var name = url.parse(req.url).pathname.split("/")[1];
+    var path = usrDir + 'data_' + name + "/";
+    var file = name + '.json';
+    if(!fs.existsSync(path + file)) {
         return genError(req, res, 400);
     }
-    fs.readFile(name, 'utf-8', (err, data) => {
+    fs.readFile(path + file, 'utf-8', (err, data) => {
         if(err) throw err;
         const fields = JSON.parse(data);
 
