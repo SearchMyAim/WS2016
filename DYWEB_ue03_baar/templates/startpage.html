@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{title}}</title>
+        <style>
+            html {
+                font-family: sans-serif;
+            }
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+            }
+
+            li {
+                float: left;
+            }
+
+            li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+            li a:hover {
+                background-color: #111;
+            }
+
+            div input, textarea {
+                width: 200px;
+                border: 2px solid grey;
+                border-radius: 2px;
+            }
+
+            div.signup input::-webkit-input-placeholder {
+                color: grey;
+            }
+
+            div.socialLinks input, input::-webkit-input-placeholder {
+                color: white;
+            }
+
+            div.divAlign {
+                width: 200px;
+                height: 100px;
+
+                position: absolute;
+                left: 0;
+                right: 0;
+
+                margin: auto;
+            }
+
+            button {
+                color: white;
+                font-size: 14px;
+                background: #333;
+                padding: 5px 15px 5px 15px;
+                text-decoration: none;
+            }
+
+            button:hover {
+                background: #111;
+                text-decoration: none;
+            }
+
+            .userInformation ul {
+                all: unset;
+                display:table-row;
+                vertical-align: middle;
+            }
+
+            .userInformation ul li {
+                display: table-cell;
+                height: 20px;
+                list-style-type: none;
+                margin: 10px;
+                vertical-align: middle;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        {{> (lookup . 'bodyPartial') }}
+    </body>
+</html>

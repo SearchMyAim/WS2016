@@ -1,0 +1,23 @@
+<ul>
+    <li><a href="/">Home</a></li>
+</ul>
+<form action="{{action}}" method="post">
+    <div class="divAlign">
+        <div class="signup">
+            <h4>User Information</h4>
+            <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="Username" placeholder="Username"></p>
+            <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="First Name" placeholder="First Name"></p>
+            <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="Last Name" placeholder="Last Name"></p>
+            <p><textarea name="Description" rows="4" cols="30" placeholder="Description"></textarea></p>
+
+        </div>
+        <div class="socialLinks">
+            <h4>Social media links</h4>
+            <p><input style="background-color: #3b5998;" type="text" name="Facebook" placeholder="Facebook"></input></p>
+            <p><input style="background-color: #4099FF;" type="text" name="Twitter" placeholder="Twitter"></input></p>
+            <p><input style="background-color: #126567;" type="text" name="Xing" placeholder="Xing"></input></p>
+            <p><input style="background-color: #C92228;" type="text" name="Pinterest" placeholder="Pinterest"></input></p>
+        </div>
+        <p><button type="submit">Submit</button></p>
+    </div>
+</form>

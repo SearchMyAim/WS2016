@@ -1,0 +1,12 @@
+<ul>
+    <li><a href="/">Home</a></li>
+</ul>
+<div class="userInformation">
+    <ul>
+        {{#each data}}
+            <li>{{@key}}: {{this}} </li><br />
+        {{else}}
+            None</li><br />
+        {{/each}}
+    </ul>
+</div>
