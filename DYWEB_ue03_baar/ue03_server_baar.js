@@ -51,7 +51,14 @@ const routes = [
             'post': getSignUp,
             'get': getSignUp
         }
+    },
+    {
+        rex: /^\/usrDir\/data_[a-zA-Z0-9_]{1,255}\/image.(jpg|jpeg|png)$/,
+        methods: {
+            'get': getImg
+        }
     }
+
 
 ];
 
@@ -114,10 +121,14 @@ function postNewUser(req, res) {
         if(err) throw err;
         var name = fields.Username;
         var path = usrDir + 'data_' + name + "/";
-
         if(!fs.existsSync(path)) {
             fs.mkdirSync(path);
         }
+
+        form.uploadDir = path;
+        const fileName = files.imagefile.name;
+        const currentPath = files.imagefile.path;
+        fs.renameSync(currentPath, form.uploadDir + "image" + getFileExt(fileName).toLowerCase());
 
         fs.writeFile(path + name + '.json', JSON.stringify(fields), 'utf-8', (err) => {
             if(err) throw err;
@@ -145,23 +156,72 @@ function userProfil(req, res) {
     var name = url.parse(req.url).pathname.split("/")[1];
     var path = usrDir + 'data_' + name + "/";
     var file = name + '.json';
+
     if(!fs.existsSync(path + file)) {
         return genError(req, res, 404);
     }
     fs.readFile(path + file, 'utf-8', (err, data) => {
         if(err) throw err;
-        const fields = JSON.parse(data);
+        var fields = JSON.parse(data);
 
+        var temp = glob.sync(path + "image.*");
+        var img = null;
+        if(temp != null) {
+            img = temp[0];
+        }
         res.setHeader('Content-Type', 'text/html');
         res.statusCode = 200;
         res.write(layout({
             title: "User Profil",
             bodyPartial: 'userProfil',
             action: name + "/edit",
-            data: fields
+            data: fields,
+            imgSrc: img
         }));
         res.end();
     });
+}
+
+/**
+ *
+ * @param req
+ * @param res
+ */
+function getImg(req, res) {
+    var parsedUrl = url.parse(req.url);
+
+    var result = /image\.(jpg|jpeg|png)$/.exec(parsedUrl.pathname);
+    var fileName = result[0];
+    var fileExt = result[1];
+    var path = "." + parsedUrl.pathname;
+
+    if(fileName) {
+        fs.readFile(path, '', (err, data) => {
+            if (err) {
+                genError(req, res, 404);
+            } else {
+                var contentType = fileExt === "jpeg" || fileExt === "jpg" ? "image/jpeg" : "image/png";
+                res.statusCode = 200;
+                res.setHeader('Content-Type', contentType);
+                res.write(data);
+                res.end();
+            }
+        });
+    }
+    else {
+        genError(req, res, 404);
+    }
+
+}
+
+
+/**
+ *
+ * @param fileName
+ * @returns {string}
+ */
+function getFileExt (fileName) {
+    return fileName ? fileName.substr(fileName.lastIndexOf(".")) : "";
 }
 
 /* Compile HTML Page */

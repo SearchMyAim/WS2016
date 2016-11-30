@@ -1,7 +1,7 @@
 <ul>
     <li><a href="/">Home</a></li>
 </ul>
-<form action="/{{action}}" method="post">
+<form action="/{{action}}" method="post" enctype="multipart/form-data">
     <div class="divAlign">
         <div class="signup">
             <h4>User Information</h4>
@@ -21,6 +21,9 @@
             <p><input style="background-color: #4099FF;" type="text" name="Twitter" placeholder="Twitter"></input></p>
             <p><input style="background-color: #126567;" type="text" name="Xing" placeholder="Xing"></input></p>
             <p><input style="background-color: #C92228;" type="text" name="Pinterest" placeholder="Pinterest"></input></p>
+        </div>
+        <div>
+            <p><input type="file" accept="image/jpeg, image/png" name="imagefile"></p>
         </div>
         <p><button type="submit">Submit</button></p>
     </div>
