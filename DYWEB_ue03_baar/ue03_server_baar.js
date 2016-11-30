@@ -27,7 +27,8 @@ const routes = [
     {
         rex: /^\/signup\/{0,1}$/,
         methods: {
-            'get': getSignUp
+            'get': getSignUp,
+            'post': getSignUp
         }
     },
     {
@@ -39,8 +40,8 @@ const routes = [
     {
         rex: /^\/[a-zA-Z0-9_]{1,255}$/,
         methods: {
-            'post': postUserProfil,
-            'get': postUserProfil
+            'post': userProfil,
+            'get': userProfil
         }
     }
 
@@ -53,6 +54,7 @@ hbs.registerPartial('newUser',      htmlHandler.getUserSuccess());
 hbs.registerPartial('userProfil',   htmlHandler.getUserProfil());
 hbs.registerPartial('err500',       htmlHandler.getError500());
 hbs.registerPartial('err400',       htmlHandler.getError400());
+hbs.registerPartial('err404',       htmlHandler.getError404());
 hbs.registerPartial('err405',       htmlHandler.getError405());
 
 /* Functions */
@@ -96,12 +98,18 @@ function postNewUser(req, res) {
     form.parse(req, (err, fields, files) => {
         if(err) throw err;
         var name = fields.Username;
-        fs.writeFile(usrDir + name + '.json', JSON.stringify(fields), 'utf-8', (err) => {
+        var path = usrDir + 'data_' + name + "/";
+
+        if(!fs.existsSync(path)) {
+            fs.mkdirSync(path);
+        }
+
+        fs.writeFile(path + name + '.json', JSON.stringify(fields), 'utf-8', (err) => {
             if(err) throw err;
 
             res.setHeader('Content-Type', 'text/html');
-            res.setHeader('Location', "/user");
-            res.statusCode = 201;
+            res.setHeader('Location', "/" + name);
+            res.statusCode = 303;
             res.write(layout({
                 title: "User created",
                 bodyPartial: "newUser",
@@ -118,12 +126,14 @@ function postNewUser(req, res) {
  * @param res
  * @returns {*}
  */
-function postUserProfil(req, res) {
-    const name = usrDir + url.parse(req.url).pathname.split("/")[1] + '.json';
-    if(!fs.existsSync(name)) {
-        return genError(req, res, 400);
+function userProfil(req, res) {
+    var name = url.parse(req.url).pathname.split("/")[1];
+    var path = usrDir + 'data_' + name + "/";
+    var file = name + '.json';
+    if(!fs.existsSync(path + file)) {
+        return genError(req, res, 404);
     }
-    fs.readFile(name, 'utf-8', (err, data) => {
+    fs.readFile(path + file, 'utf-8', (err, data) => {
         if(err) throw err;
         const fields = JSON.parse(data);
 
@@ -132,6 +142,7 @@ function postUserProfil(req, res) {
         res.write(layout({
             title: "User Profil",
             bodyPartial: 'userProfil',
+            action: "/signup",
             data: fields
         }));
         res.end();
@@ -151,8 +162,13 @@ const server = http.createServer(function(req, res) {
         });
 
         if(route) {
-            const handler = route.methods[method] || genError(req, res, 405); //or 405
-            handler(req, res);
+            if(route.methods[method] == null) {
+                genError(req, res, 405);
+            }
+            else {
+                const handler = route.methods[method];
+                handler(req, res);
+            }
         }
         else {
             genError(req, res, 400);

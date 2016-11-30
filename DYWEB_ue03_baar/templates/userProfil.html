@@ -1,12 +1,38 @@
 <ul>
     <li><a href="/">Home</a></li>
 </ul>
-<div class="userInformation">
-    <ul>
-        {{#each data}}
-            <li>{{@key}}: {{this}} </li><br />
-        {{else}}
-            None</li><br />
-        {{/each}}
-    </ul>
-</div>
+<form action="{{action}}" method="post">
+    <div class="divAlign">
+        <div class="signup">
+            <h4>User Information</h4>
+            <p>Username: {{data.Username}}</p>
+            <p>Forename: {{data.Forename}}</p>
+            <p>Surname:  {{data.Surname}}</p>
+            <p>Description: {{data.Description}}</p>
+        </div>
+        <div class="socialLinks">
+            <h4>Social media links</h4>
+            {{#if data.Facebook}}
+                <p><a target="_blank" href="{{data.Facebook}}">Facebook</a></p>
+            {{else}}
+                <p>Facebook: None</p>
+            {{/if}}
+            {{#if data.Twitter}}
+                <p><a target="_blank" href="{{data.Twitter}}">Twitter</a></p>
+            {{else}}
+                <p>Twitter: None</p>
+            {{/if}}
+            {{#if data.Xing}}
+                <p><a target="_blank" href="{{data.Xing}}">Twitter</a></p>
+            {{else}}
+                <p>Xing: None</p>
+            {{/if}}
+            {{#if data.Pinterest}}
+                <p><a target="_blank" href="{{data.Pinterest}}">Twitter</a></p>
+            {{else}}
+                <p>Pinterest: None</p>
+            {{/if}}
+        </div>
+        <p><button type="submit">Edit</button></p>
+    </div>
+</form>
