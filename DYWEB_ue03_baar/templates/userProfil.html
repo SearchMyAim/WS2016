@@ -12,26 +12,35 @@
         </div>
         <div class="socialLinks">
             <h4>Social media links</h4>
+
+            <p><img src="./pics/facebook_icon.png" />
             {{#if data.Facebook}}
-                <p><a target="_blank" href="{{data.Facebook}}">Facebook</a></p>
+                <a target="_blank" href="{{data.Facebook}}">Facebook</a>
             {{else}}
-                <p>Facebook: None</p>
+                Facebook: None
             {{/if}}
+            </p>
+            <p><img src="./pics/Twitter_icon.png" />
             {{#if data.Twitter}}
-                <p><a target="_blank" href="{{data.Twitter}}">Twitter</a></p>
+                <a target="_blank" href="{{data.Twitter}}">Twitter</a>
             {{else}}
-                <p>Twitter: None</p>
+                Twitter: None
             {{/if}}
-            {{#if data.Xing}}
-                <p><a target="_blank" href="{{data.Xing}}">Xing</a></p>
+            </p>
+            <p><img src="./pics/instagram_icon.png" />
+            {{#if data.Instragram}}
+                <a target="_blank" href="{{data.Instragram}}">Instragram</a>
             {{else}}
-                <p>Xing: None</p>
+                Xing: None
             {{/if}}
+            </p>
+            <p><img src="./pics/Pinterest_icon.png" />
             {{#if data.Pinterest}}
-                <p><a target="_blank" href="{{data.Pinterest}}">Pinterest</a></p>
+                <a target="_blank" href="{{data.Pinterest}}">Pinterest</a>
             {{else}}
-                <p>Pinterest: None</p>
+                Pinterest: None
             {{/if}}
+            </p>
         </div>
         <div>
             <img src="{{imgSrc}}" style="width:200px;"/>

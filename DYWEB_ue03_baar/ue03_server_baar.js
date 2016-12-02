@@ -9,7 +9,8 @@ const   http        = require('http'),
         fs          = require('fs'),
         htmlHandler = require("./htmlTemplates"),
         formidable  = require('formidable'),
-        util        = require('util');
+        util        = require('util'),
+        glob        = require('glob');
 
 /* Sub-Directories must exist. */
 const usrDir = "./usrDir/";
@@ -57,7 +58,20 @@ const routes = [
         methods: {
             'get': getImg
         }
+    },
+    {
+        rex: /^\/favicon.ico$/,
+        methods: {
+            'get': getFavicon
+        }
+    },
+    {
+        rex: /^\/pics\/[a-zA-Z]{1,25}_icon.png$/,
+        methods: {
+            'get': getIcon
+        }
     }
+
 
 
 ];
@@ -211,6 +225,38 @@ function getImg(req, res) {
     else {
         genError(req, res, 404);
     }
+}
+
+/**
+ *
+ * @param req
+ * @param res
+ */
+function getFavicon(req, res) {
+    fs.readFile("./pics/favicon.ico", '', (err, data) => {
+       if(err) throw err;
+       res.statusCode = 200;
+       res.setHeader('Content-Type', 'image/x-icon');
+       res.write(data);
+       res.end();
+    });
+}
+
+/**
+ *
+ * @param req
+ * @param res
+ */
+function getIcon(req, res) {
+   var parsedUrl = url.parse(req.url);
+   var icon = parsedUrl.pathname.split("/")[2];
+   fs.readFile("./pics/" + icon, '', (err, data) => {
+       if(err) throw err;
+       res.statusCode = 200;
+       res.setHeader('Content-Type', 'image/png');
+       res.write(data);
+       res.end();
+   });
 
 }
 
