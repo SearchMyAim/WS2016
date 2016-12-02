@@ -70,6 +70,12 @@ const routes = [
         methods: {
             'get': getIcon
         }
+    },
+    {
+        rex: /^\/pics\/background_[a-zA-Z0-9]{1,25}.jpg$/,
+        methods: {
+            'get': getBackground
+        }
     }
 
 
@@ -87,16 +93,27 @@ hbs.registerPartial('err404',       htmlHandler.getError404());
 hbs.registerPartial('err405',       htmlHandler.getError405());
 
 /* Functions */
+/**
+ *
+ * @param req
+ * @param res
+ * @param error
+ */
 function genError(req, res, error) {
     res.setHeader('Content-Type', 'text/html');
     res.statusCode = error;
     res.write(layout({
         bodyPartial: "err" + error.toString(),
-        title: "test"
+        title: "Error "+ error
     }));
     res.end();
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ */
 function getStartPage(req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.statusCode = 200;
@@ -107,6 +124,11 @@ function getStartPage(req, res) {
     res.end();
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ */
 function getSignUp(req, res) {
     var name = url.parse(req.url).pathname.split("/")[1];
     var username = null;
@@ -257,7 +279,23 @@ function getIcon(req, res) {
        res.write(data);
        res.end();
    });
+}
 
+/**
+ *
+ * @param req
+ * @param res
+ */
+function getBackground(req, res) {
+    var parsedUrl = url.parse(req.url);
+    var icon = parsedUrl.pathname.split("/")[2];
+    fs.readFile("./pics/" + icon, '', (err, data) => {
+        if(err) throw err;
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'image/jpg');
+        res.write(data);
+        res.end();
+    });
 }
 
 
