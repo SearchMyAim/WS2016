@@ -1,0 +1,20 @@
+{
+  "name": "ue4",
+  "version": "1.0.0",
+  "description": "Sample for 'dynamic web' exercise 4",
+  "main": "ue-sample-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "author": "DI (FH)",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "express-formidable": "^1.0.0",
+    "handlebars": "^4.0.6"
+  }
+}
