@@ -1,0 +1,30 @@
+<ul>
+    <li><a href="/">Home</a></li>
+</ul>
+<form action="/{{action}}" method="post" enctype="multipart/form-data">
+    <div class="divAlign">
+        <div class="signup">
+            <h4>User Information</h4>
+            {{#if username}}
+                <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="Username" value="{{username}}" readonly="readonly"></p>
+            {{else}}
+                <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="Username" placeholder="Username" required></p>
+            {{/if}}
+            <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="Forename" placeholder="Forename" required></p>
+            <p><input type="text" pattern="[a-zA-Z0-9_]{1,255}" title="Only word characters are allowed!" name="Surname" placeholder="Surname" required></p>
+            <p><textarea name="Description" rows="4" cols="30" placeholder="Description"></textarea></p>
+
+        </div>
+        <div class="socialLinks">
+            <h4>Social media links</h4>
+            <p><img src="http://localhost:3000/pics/facebook_icon.png" /> Facebook:<input style="background-color: #3b5998;" type="text" pattern="https?://.+" title="URL must start with https?://" name="Facebook" placeholder="Facebook" /></p>
+            <p><img src="http://localhost:3000/pics/Twitter_icon.png" /> Twitter:<input style="background-color: #4099FF;" type="text" pattern="https?://.+" title="URL must start with https?://" name="Twitter" placeholder="Twitter" /></p>
+            <p><img src="http://localhost:3000/pics/instagram_icon.png" /> Instragram:<input style="background-color: #8a3ab9;" type="text" pattern="https?://.+" title="URL must start with https?://" name="Instragram" placeholder="Instragram" /></p>
+            <p><img src="http://localhost:3000/pics/Pinterest_icon.png" /> Pinterest:<input style="background-color: #C92228;" type="text" pattern="https?://.+" title="URL must start with https?://" name="Pinterest" placeholder="Pinterest" /></p>
+        </div>
+        <div>
+            <p><input type="file" accept="image/jpeg, image/png" name="imagefile"></p>
+        </div>
+        <p><button type="submit">Submit</button></p>
+    </div>
+</form>

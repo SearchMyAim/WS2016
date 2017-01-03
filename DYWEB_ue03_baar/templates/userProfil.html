@@ -1,0 +1,50 @@
+<ul>
+    <li><a href="/">Home</a></li>
+</ul>
+<form action="{{action}}" method="post">
+    <div class="divAlign">
+        <div class="signup">
+            <h4>User Information</h4>
+            <p>Username: {{data.Username}}</p>
+            <p>Forename: {{data.Forename}}</p>
+            <p>Surname:  {{data.Surname}}</p>
+            <p>Description: {{data.Description}}</p>
+        </div>
+        <div class="socialLinks">
+            <h4>Social media links</h4>
+
+            <p><img src="http://localhost:3000/pics/facebook_icon.png" />
+            {{#if data.Facebook}}
+                <a target="_blank" href="{{data.Facebook}}">Facebook</a>
+            {{else}}
+                Facebook: None
+            {{/if}}
+            </p>
+            <p><img src="http://localhost:3000/pics/Twitter_icon.png" />
+            {{#if data.Twitter}}
+                <a target="_blank" href="{{data.Twitter}}">Twitter</a>
+            {{else}}
+                Twitter: None
+            {{/if}}
+            </p>
+            <p><img src="http://localhost:3000/pics/instagram_icon.png" />
+            {{#if data.Instragram}}
+                <a target="_blank" href="{{data.Instragram}}">Instragram</a>
+            {{else}}
+                Xing: None
+            {{/if}}
+            </p>
+            <p><img src="http://localhost:3000/pics/Pinterest_icon.png" />
+            {{#if data.Pinterest}}
+                <a target="_blank" href="{{data.Pinterest}}">Pinterest</a>
+            {{else}}
+                Pinterest: None
+            {{/if}}
+            </p>
+        </div>
+        <div>
+            <img src="{{imgSrc}}" style="width:200px;"/>
+        </div>
+        <p><button type="submit">Edit</button></p>
+    </div>
+</form>
