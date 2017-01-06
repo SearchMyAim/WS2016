@@ -19,8 +19,12 @@ module.exports = function (app) {
     // and gets passed the enriched _req_ object with the new properties.
     app.post('/profiles', formidable());
     app.post('/profiles', profilesController.postNewProfile);
+    app.post('/profiles/:nickname/edit', formidable());
+    app.post('/profiles/:nickname/edit', profilesController.editExistingProfile);
 
     // Note: ":nickname" is an express.js route parameter. We no longer need to parse
     // the nickname from the URI path ourselves!
     app.get('/profiles/:nickname', profilesController.getProfile);
+    app.get('/profiles/:nickname/edit', profilesController.editProfile);
+    app.get('/profiles/:nickname/image.*', profilesController.getImage);
 };

@@ -40,15 +40,6 @@ const layout = hbs.compile(`<!DOCTYPE html>
                     color: white;
                     padding: 2em 0;
                 }
-                footer {
-                    background-color: #1a75ff;
-                    color: white;
-                    padding: 1em 0;
-                    margin: 1em 0 0 0;
-                    position:absolute;
-                    bottom: 0;
-                    width: 100%;
-                }
                 .cta {
                     text-align: center;
                 }
@@ -80,9 +71,6 @@ const layout = hbs.compile(`<!DOCTYPE html>
                 {{> (lookup . 'bodyPartial') }}
             </div>
         </body>
-        <footer>
-            <h2>test</h2>
-        </footer>
     </html>`);
 
 // We export the already compiled layout template. In fact, _layout_ is a function and
