@@ -6,23 +6,31 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@Entity @Table(name="Bier")
+@Entity @Table(name="beer")
 public class Beer {
 	
-	@OneToMany @JoinColumn(name="brauart")	private Art art = null;
-	@Id @Column(name="Name")				private String name;
-	@Column(name="Kaufdatum")				private Date kDate;
-	@Column(name="Ablaufdatum")				private Date aDate;
-	@Column(name="Produktionsdatum")		private Date pDate;
+	@ManyToOne @JoinColumn(name="brewing_method", referencedColumnName="brewing_method")	
+	private Brand art = null;
 	
+	@ManyToOne @JoinColumn(name="person_name", referencedColumnName="name")		
+	private Person person;
+	
+	@ManyToOne @JoinColumn(name="storage_id", referencedColumnName="pk_id")		
+	private Storage storage = null;
+	
+	@Id @Column(name="name")				private String name;
+	@Column(name="buy_date")				private Date bDate;
+	@Column(name="expire_date")				private Date eDate;
+	@Column(name="production_date")			private Date pDate;
 	
 	public Beer() {
 	}
 	
-	public void setBrauArt(Art art) {
+	public void setBrauArt(Brand art) {
 		this.art = art;
 	}
 	
@@ -35,19 +43,19 @@ public class Beer {
 	}
 	
 	public Date getBuyDate() {
-		return kDate;
+		return bDate;
 	}
 	
 	public void setBuyDate(Date buyDate) {
-		this.kDate = buyDate;
+		this.bDate = buyDate;
 	}
 	
 	public Date getExpireDate() {
-		return aDate;
+		return eDate;
 	}
 	
 	public void setExpireDate(Date expireDate) {
-		this.aDate = expireDate;
+		this.eDate = expireDate;
 	}
 	
 	public Date getProductionDate() {
@@ -56,5 +64,21 @@ public class Beer {
 	
 	public void setProductionDate(Date productionDate) {
 		this.pDate = productionDate;
+	}
+	
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+	
+	public Person getPerson() {
+		return this.person;
+	}
+	
+	public void setStorage(Storage storage) {
+		this.storage = storage;
+	}
+	
+	public Storage getStorage() {
+		return this.storage;
 	}
 }

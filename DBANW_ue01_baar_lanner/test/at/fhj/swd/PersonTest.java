@@ -1,6 +1,5 @@
 package at.fhj.swd;
 
-import javax.management.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -17,7 +16,7 @@ public class PersonTest extends Assert {
 	static EntityManagerFactory factory;
 	static EntityManager manager;
 	static EntityTransaction transaction;
-	static final String persistenceUnitName = "Beer";
+	static final String persistenceUnitName = "beer_storage";
 	
 	static Person person = null;
 	
@@ -39,43 +38,44 @@ public class PersonTest extends Assert {
 	}
 	
 	@Test (expected=IllegalArgumentException.class) 
-	public void B_personNameTooShort() {
+	public void T_001_personNameTooShort() {
 		person = new Person("Al", "m", "AUT", 28);
 	}
 	
 	@Test (expected=IllegalArgumentException.class) 
-	public void B_personGenderWrong() {
+	public void T_002_personGenderWrong() {
 		person = new Person("Alex", "a", "AUT", 28);
 	}
 	
 	@Test (expected=IllegalArgumentException.class) 
-	public void B_personGenderTooLong() {
+	public void T_003_personGenderTooLong() {
 		person = new Person("Alex", "mm", "AUT", 28);
 	}
 	
 	@Test (expected=IllegalArgumentException.class) 
-	public void B_personNationalityTooShort() {
+	public void T_004_personNationalityTooShort() {
 		person = new Person("Alex", "m", "AU", 28);
 	}
 	
 	@Test (expected=IllegalArgumentException.class) 
-	public void B_personNationalityTooLong() {
+	public void T_005_personNationalityTooLong() {
 		person = new Person("Alex", "m", "AUTT", 28);
 	}
 	
 	@Test (expected=IllegalArgumentException.class) 
-	public void B_personAgeZero() {
+	public void T_006_personAgeZero() {
 		person = new Person("Alex", "m", "AUTT", 0);
 	}
 	
 	@Test (expected=IllegalArgumentException.class) 
-	public void B_personAgeTooHigh() {
+	public void T_007_personAgeTooHigh() {
 		person = new Person("Alex", "m", "AUTT", 151);
 	}
 	
 	@Test
-	public void C_addPerson() {
+	public void T_008_addPerson() {
 		clean();
+		
 		person = new Person("Alex", "m", "AUT", 28);
 		assertNotNull(person);
 		manager.persist(person);
@@ -83,7 +83,7 @@ public class PersonTest extends Assert {
 	}
 	
 	@Test
-	public void C_removePerson() {
+	public void T_009_removePerson() {
 		person = manager.find(Person.class, "Alex");
 		assertNotNull(person);
 		

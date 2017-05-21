@@ -11,13 +11,13 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 
 @org.junit.FixMethodOrder(org.junit.runners.MethodSorters.NAME_ASCENDING)
-public class LandTest extends Assert {
+public class BrandTest extends Assert {
 	static EntityManagerFactory factory;
 	static EntityManager manager;
 	static EntityTransaction transaction;
-	static final String persistenceUnitName = "Beer";
+	static final String persistenceUnitName = "beer_storage";
 	
-	static Land land = null;
+	static Brand brewing_method = null;
 	
 	@BeforeClass 
 	public static void setup() {
@@ -36,36 +36,26 @@ public class LandTest extends Assert {
 		transaction.begin();
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
-	public void B_landNameTooShort() {
-		land = new Land("Ös");
-	}
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void B_landNameWithDigit() {
-		land = new Land("Österreich1");	
-	}
-	
 	@Test
-	public void C_addLand() {
+	public void T_001_addBrewingMethod() {
 		clean();
-		land = new Land("Österreich");
-		assertNotNull(land);
-		manager.persist(land);
+		brewing_method = new Brand("Bockbier");
+		assertNotNull(brewing_method);
+		manager.persist(brewing_method);
 		transaction.commit();				
 	}
 	
 	@Test
-	public void C_removeLand() {
-		land = manager.find(Land.class, "Österreich");
-		assertNotNull(land);
+	public void T_002_removeBrewingMethod() {
+		brewing_method = manager.find(Brand.class, "Bockbier");
+		assertNotNull(brewing_method);
 		
 		transaction.begin();
-		manager.remove(land);
+		manager.remove(brewing_method);
 		transaction.commit();
 		
-		land = manager.find(Land.class, land.getName());
-		assertNull(land);
+		brewing_method = manager.find(Brand.class, brewing_method.getBrewingMethod());
+		assertNull(brewing_method);
 	}
 	
 	@AfterClass
@@ -78,6 +68,6 @@ public class LandTest extends Assert {
 	}
 	
 	public static void clean() {
-		manager.createNativeQuery("DELETE FROM land").executeUpdate();
+		manager.createNativeQuery("DELETE FROM brand").executeUpdate();
 	}
 }

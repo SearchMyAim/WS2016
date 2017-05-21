@@ -5,12 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity @Table(name="Person")
+@Entity @Table(name="person")
 public class Person {
 	@Id @Column(name="name") 		private String name;
-	@Column(name="geschlecht")		private String geschlecht;
-	@Column(name="nationalitaet")	private String nationalitaet;
-	@Column(name="alter")			private int alter;
+	@Column(name="gender")			private String gender;
+	@Column(name="nationality")		private String nationality;
+	@Column(name="age")				private int age;
 	
 	public Person(String name, String geschlecht, String nationalitaet, int alter) {
 		setName(name);
@@ -21,9 +21,9 @@ public class Person {
 	
 	public Person() {
 		this.name = "Empty";
-		this.geschlecht = "n";
-		this.nationalitaet = "NON";
-		this.alter = 0;
+		this.gender = "n";
+		this.nationality = "NON";
+		this.age = 0;
 	}
 	
 	public String getName() {
@@ -38,35 +38,35 @@ public class Person {
 	}
 
 	public String getGeschlecht() {
-		return geschlecht;
+		return gender;
 	}
 
 	public void setGeschlecht(String geschlecht) {
 		if((geschlecht.length() != 1) || (geschlecht.matches("[mMfF]") == false)) {
 			throw new IllegalArgumentException("Either m or f!");
 		}
-		this.geschlecht = geschlecht;
+		this.gender = geschlecht;
 	}
 
 	public String getNationalität() {
-		return nationalitaet;
+		return nationality;
 	}
 
 	public void setNationalität(String nationalitaet) {
 		if(nationalitaet.length() != 3) {
 			throw new IllegalArgumentException("National Country Code MUST be 3 letters!");
 		}
-		this.nationalitaet = nationalitaet;
+		this.nationality = nationalitaet;
 	}
 
 	public int getAlter() {
-		return alter;
+		return age;
 	}
 
 	public void setAlter(int alter) {
 		if((alter == 0) || (alter > 150)) {
 			throw new IllegalArgumentException("Not born or for sure dead already!");
 		}
-		this.alter = alter;
+		this.age = alter;
 	}
 }
