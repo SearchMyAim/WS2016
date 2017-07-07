@@ -22,14 +22,23 @@ public class Beer {
 	@ManyToOne @JoinColumn(name="storage_id", referencedColumnName="pk_id")		
 	private Storage storage = null;
 	
-	@Id @Column(name="name")				private String name;
-	@Column(name="buy_date")				private Date bDate;
-	@Column(name="expire_date")				private Date eDate;
-	@Column(name="production_date")			private Date pDate;
+	@Id @Column(name="id")				private int id; 
+	@Column(name="name")				private String name;
+	@Column(name="buy_date")			private Date bDate;
+	@Column(name="expire_date")			private Date eDate;
+	@Column(name="production_date")		private Date pDate;
 	
 	public Beer() {}
 	
-	public Beer(String name, Brand brand, Person person, Date buyDate, Date expireDate, Date productionDate, Storage storage) {
+	public Beer(int id, 
+				String name, 
+				Brand brand, 
+				Person person, 
+				Date buyDate, 
+				Date expireDate, 
+				Date productionDate, 
+				Storage storage) {
+		setId(id);
 		setName(name);
 		setBrauArt(brand);
 		setPerson(person);
@@ -39,8 +48,20 @@ public class Beer {
 		setStorage(storage);
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return this.id;
+	}
+	
 	public void setBrauArt(Brand art) {
 		this.art = art;
+	}
+	
+	public Brand getBrand() {
+		return this.art;
 	}
 	
 	public String getName() {

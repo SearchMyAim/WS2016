@@ -1,5 +1,6 @@
 package at.fhj.swd;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -37,6 +38,19 @@ public class BeerCrud {
 	public List<Beer> findAll() {
 		String query = "SELECT u FROM " + Beer.class.getName() + " AS u";
 		return ems.getInstance().createQuery(query).getResultList();
+	}
+	
+	public Beer createBeer(	int id,
+							String name, 
+							Brand brand, 
+							Person person, 
+							Date buyDate, 
+							Date expireDate, 
+							Date productionDate, 
+							Storage storage) {
+		Beer b = new Beer(id, name, brand, person, buyDate, expireDate, productionDate, storage);
+		insert(b);
+		return b;
 	}
 	
 	

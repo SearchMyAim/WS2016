@@ -4,6 +4,7 @@ CREATE TABLE brand (
 );  
   
 CREATE TABLE beer (
+  id              int4 NOT NULL,
   name            varchar(255) NOT NULL, 
   brewing_method  varchar(255) NOT NULL, 
   person_name     varchar(255) NOT NULL, 
@@ -11,7 +12,7 @@ CREATE TABLE beer (
   expire_date     date, 
   production_date date, 
   storage_id      int4 NOT NULL, 
-  PRIMARY KEY (name)
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE person (
