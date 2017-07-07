@@ -18,12 +18,20 @@ public class Location {
 	@ManyToOne @JoinColumn(name="producer_name", referencedColumnName="name")
 	private Producer producer;
 	
-	public Location(Country country, Producer producer) {
+	public Location() {}
+	
+	public Location(String name, Country country, Producer producer) {
+		setLocationName(name);
 		setCountry(country);
+		setProducer(producer);
 	}
 	
-	public Location() {
-		
+	public void setLocationName(String name) {
+		this.locationName = name;
+	}
+	
+	public String getLocationName() {
+		return this.locationName;
 	}
 	
 	public void setProducer(Producer producer) {
@@ -41,7 +49,5 @@ public class Location {
 	public Country getCountry() {
 		return this.country;
 	}
-	
-	
 	
 }

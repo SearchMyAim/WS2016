@@ -27,7 +27,16 @@ public class Beer {
 	@Column(name="expire_date")				private Date eDate;
 	@Column(name="production_date")			private Date pDate;
 	
-	public Beer() {
+	public Beer() {}
+	
+	public Beer(String name, Brand brand, Person person, Date buyDate, Date expireDate, Date productionDate, Storage storage) {
+		setName(name);
+		setBrauArt(brand);
+		setPerson(person);
+		setBuyDate(buyDate);
+		setExpireDate(expireDate);
+		setProductionDate(productionDate);
+		setStorage(storage);
 	}
 	
 	public void setBrauArt(Brand art) {
